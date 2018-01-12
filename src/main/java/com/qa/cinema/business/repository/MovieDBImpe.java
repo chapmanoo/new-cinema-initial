@@ -5,7 +5,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-
 import com.qa.cinema.persistence.Movie;
 import com.qa.cinema.util.JSONUtil;
 
@@ -17,16 +16,22 @@ public class MovieDBImpe {
 	private JSONUtil util = new JSONUtil();
 
 	@Transactional(Transactional.TxType.REQUIRED)
-	public String createMovie(String movie) {
+	public String createMovieFromString(String movie) {
 		Movie aMovie = util.getObjectForJSON(movie, Movie.class);
 		em.persist(aMovie);
 		return "{\"message\": \"movie sucessfully added\"}";
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
-	public String updateMovie(String newDetails) {
+	public String updateMovieFromString(String newDetails) {
 		Movie aMovie = util.getObjectForJSON(newDetails, Movie.class);
 		em.merge(aMovie);
+		return "{\"message\": \"movie sucessfully updated\"}";
+	}
+	
+	@Transactional(Transactional.TxType.REQUIRED)
+	public String updateMovieFromMovie(Movie newDetails) {
+		em.merge(newDetails);
 		return "{\"message\": \"movie sucessfully updated\"}";
 	}
 	
@@ -49,7 +54,7 @@ public class MovieDBImpe {
     }
 
 	@Transactional(Transactional.TxType.REQUIRED)
-    public Movie create(Movie movie) {
+    public Movie createMovieFromMovie(Movie movie) {
         em.persist(movie);
         return movie;
     }
