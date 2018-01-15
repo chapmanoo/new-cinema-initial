@@ -21,6 +21,9 @@ public class Movie {
 	@Column(length = 4, name = "age_rating")
 	private String ageRating;
 	
+	public Movie() {
+		
+	}
 
 	public Movie(String title, String genre, String ageRating) {
 		super();

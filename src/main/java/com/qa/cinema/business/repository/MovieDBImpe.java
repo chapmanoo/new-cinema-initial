@@ -23,16 +23,26 @@ public class MovieDBImpe {
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
-	public String updateMovieFromString(String newDetails) {
-		Movie aMovie = util.getObjectForJSON(newDetails, Movie.class);
-		em.merge(aMovie);
-		return "{\"message\": \"movie sucessfully updated\"}";
+	public String updateMovieFromString(Long id, String newDetails) {
+		Movie newMovie = util.getObjectForJSON(newDetails, Movie.class);
+		Movie currentMovie = findMovie(id);
+		if(currentMovie != null) {
+			currentMovie = newMovie;
+			em.merge(newMovie);
+			return "{\"message\": \"movie sucessfully updated\"}";
+		}
+		return "{\"message\": \"movie not updated\"}";
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
-	public String updateMovieFromMovie(Movie newDetails) {
-		em.merge(newDetails);
-		return "{\"message\": \"movie sucessfully updated\"}";
+	public String updateMovieFromMovie(Long id, Movie newMovie) {
+		Movie currentMovie = findMovie(id);
+		if(currentMovie != null) {
+			currentMovie = newMovie;
+			em.merge(newMovie);
+			return "{\"message\": \"movie sucessfully updated\"}";
+		}
+		return "{\"message\": \"movie not updated\"}";
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
